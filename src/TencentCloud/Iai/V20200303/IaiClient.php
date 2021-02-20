@@ -45,6 +45,11 @@ use TencentCloud\Iai\V20200303\Models as Models;
 
 >     
 - 公共参数中的签名方式请使用V3版本，即配置SignatureMethod参数为TC3-HMAC-SHA256。
+ * @method Models\CompareMaskFaceResponse CompareMaskFace(Models\CompareMaskFaceRequest $req) 对两张图片中的人脸进行相似度比对，返回人脸相似度分数。
+
+戴口罩人脸比对接口可在查询照人脸戴口罩情况下使用，口罩遮挡程度最高可以遮挡鼻尖。
+
+如图片人脸不存在戴口罩情况，建议使用人脸比对服务。
  * @method Models\CopyPersonResponse CopyPerson(Models\CopyPersonRequest $req) 将已存在于某人员库的人员复制到其他人员库，该人员的描述信息不会被复制。单个人员最多只能同时存在100个人员库中。
 >     
 - 注：若该人员创建时算法模型版本为2.0，复制到非2.0算法模型版本的Group中时，复制操作将会失败。
@@ -112,6 +117,9 @@ use TencentCloud\Iai\V20200303\Models as Models;
 >     
 - 图片的宽高比请接近3：4，不符合宽高比的图片返回的分值不具备参考意义。本接口适用于类手机自拍场景，非类手机自拍照返回的分值不具备参考意义。
 
+>
+- 使用过程中建议正对摄像头，不要距离太远，使面部可以完整地显示在识别的框内，识别过程中不要移动设备或遮挡面部。不要选择光线过强或过弱的环境进行面部识别，识别时不要添加任何滤镜。
+
 >     
 - 公共参数中的签名方式请使用V3版本，即配置SignatureMethod参数为TC3-HMAC-SHA256。
  * @method Models\DetectLiveFaceAccurateResponse DetectLiveFaceAccurate(Models\DetectLiveFaceAccurateRequest $req) 人脸静态活体检测（高精度版）可用于对用户上传的静态图片进行防翻拍活体检测，以判断是否是翻拍图片。
@@ -135,7 +143,6 @@ use TencentCloud\Iai\V20200303\Models as Models;
  * @method Models\GetUpgradeGroupFaceModelVersionJobListResponse GetUpgradeGroupFaceModelVersionJobList(Models\GetUpgradeGroupFaceModelVersionJobListRequest $req) 获取人员库升级任务列表
 
  * @method Models\GetUpgradeGroupFaceModelVersionResultResponse GetUpgradeGroupFaceModelVersionResult(Models\GetUpgradeGroupFaceModelVersionResultRequest $req) 人员库升级结果查询
-
  * @method Models\ModifyGroupResponse ModifyGroup(Models\ModifyGroupRequest $req) 修改人员库名称、备注、自定义描述字段名称。
  * @method Models\ModifyPersonBaseInfoResponse ModifyPersonBaseInfo(Models\ModifyPersonBaseInfoRequest $req) 修改人员信息，包括名称、性别等。人员名称和性别修改会同步到包含该人员的所有人员库。
  * @method Models\ModifyPersonGroupInfoResponse ModifyPersonGroupInfo(Models\ModifyPersonGroupInfoRequest $req) 修改指定人员库人员描述内容。
@@ -197,7 +204,10 @@ use TencentCloud\Iai\V20200303\Models as Models;
 - 仅支持算法模型版本（FaceModelVersion）为3.0的人员库。
  * @method Models\UpgradeGroupFaceModelVersionResponse UpgradeGroupFaceModelVersion(Models\UpgradeGroupFaceModelVersionRequest $req) 升级人员库。升级过程中，人员库仍然为原算法版本，人员库相关操作仍然支持。升级完成后，人员库为新算法版本。
 单个人员库有且仅支持一次回滚操作。
-注：此处QPS限制为10。
+
+升级是一个耗时的操作，执行时间与人员库的人脸数相关，升级的人员库中的人脸数越多，升级的耗时越长。升级接口是个异步任务，调用成功后返回JobId，通过GetUpgradeGroupFaceModelVersionResult查询升级进度和结果。如果升级成功，人员库版本将切换到新版本。如果想回滚到旧版本，可以调用RevertGroupFaceModelVersion进行回滚。
+
+注：某些接口无法进行跨人员库版本操作，例如SearchFaces，SearchPersons和CopyPerson等。当业务有多个Group操作的场景时，如同时搜索Group1和Group2，如果升级了Group1，此时Group1和Group2版本不同，造成了跨版本操作，将导致Search接口无法正常执行，返回不允许执行跨版本操作错误，升级前需考虑业务是否有多库操作的场景，否则会影响线上接口表现。
  * @method Models\VerifyFaceResponse VerifyFace(Models\VerifyFaceRequest $req) 给定一张人脸图片和一个 PersonId，判断图片中的人和 PersonId 对应的人是否为同一人。PersonId 请参考[人员库管理相关接口](https://cloud.tencent.com/document/product/867/45015)。 
 
 与[人脸比对](https://cloud.tencent.com/document/product/867/44987)接口不同的是，人脸验证用于判断 “此人是否是此人”，“此人”的信息已存于人员库中，“此人”可能存在多张人脸图片；而[人脸比对](https://cloud.tencent.com/document/product/867/44987)用于判断两张人脸的相似度。
