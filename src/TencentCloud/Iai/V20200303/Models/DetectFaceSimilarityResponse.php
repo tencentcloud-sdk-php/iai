@@ -20,18 +20,15 @@ use TencentCloud\Common\AbstractModel;
 /**
  * DetectFaceSimilarity返回参数结构体
  *
- * @method float getScore() 获取取值范围 [0.00, 100.00]。
-推荐相似度大于等于70时可判断为同一人，可根据具体场景自行调整阈值（阈值70的误通过率为千分之一，阈值80的误通过率是万分之一）。
- * @method void setScore(float $Score) 设置取值范围 [0.00, 100.00]。
-推荐相似度大于等于70时可判断为同一人，可根据具体场景自行调整阈值（阈值70的误通过率为千分之一，阈值80的误通过率是万分之一）。
+ * @method float getScore() 获取<p>取值范围 [0.00, 100.00]。<br>推荐相似度大于等于70时可判断为同一人（采用固定阈值70，误通过率为万分之一，不支持调整阈值）。</p>
+ * @method void setScore(float $Score) 设置<p>取值范围 [0.00, 100.00]。<br>推荐相似度大于等于70时可判断为同一人（采用固定阈值70，误通过率为万分之一，不支持调整阈值）。</p>
  * @method string getRequestId() 获取唯一请求 ID，由服务端生成，每次请求都会返回（若请求因其他原因未能抵达服务端，则该次请求不会获得 RequestId）。定位问题时需要提供该次请求的 RequestId。
  * @method void setRequestId(string $RequestId) 设置唯一请求 ID，由服务端生成，每次请求都会返回（若请求因其他原因未能抵达服务端，则该次请求不会获得 RequestId）。定位问题时需要提供该次请求的 RequestId。
  */
 class DetectFaceSimilarityResponse extends AbstractModel
 {
     /**
-     * @var float 取值范围 [0.00, 100.00]。
-推荐相似度大于等于70时可判断为同一人，可根据具体场景自行调整阈值（阈值70的误通过率为千分之一，阈值80的误通过率是万分之一）。
+     * @var float <p>取值范围 [0.00, 100.00]。<br>推荐相似度大于等于70时可判断为同一人（采用固定阈值70，误通过率为万分之一，不支持调整阈值）。</p>
      */
     public $Score;
 
@@ -41,8 +38,7 @@ class DetectFaceSimilarityResponse extends AbstractModel
     public $RequestId;
 
     /**
-     * @param float $Score 取值范围 [0.00, 100.00]。
-推荐相似度大于等于70时可判断为同一人，可根据具体场景自行调整阈值（阈值70的误通过率为千分之一，阈值80的误通过率是万分之一）。
+     * @param float $Score <p>取值范围 [0.00, 100.00]。<br>推荐相似度大于等于70时可判断为同一人（采用固定阈值70，误通过率为万分之一，不支持调整阈值）。</p>
      * @param string $RequestId 唯一请求 ID，由服务端生成，每次请求都会返回（若请求因其他原因未能抵达服务端，则该次请求不会获得 RequestId）。定位问题时需要提供该次请求的 RequestId。
      */
     function __construct()
